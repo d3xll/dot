@@ -4,9 +4,9 @@
 ###### Version 2401
 ---
 
-![Image](/dot/screenshoots/2.png)
-![Image](/dot/screenshoots/3.png)
-![Image](/dot/screenshoots/1.png)
+![Image](/screenshoots/2.png)
+![Image](/screenshoots/3.png)
+![Image](/screenshoots/1.png)
 
 ---
 
