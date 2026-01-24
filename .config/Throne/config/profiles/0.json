@@ -1,0 +1,88 @@
+{
+    "country": "",
+    "dl": "",
+    "gid": 1,
+    "id": 0,
+    "outbound": {
+        "dial_fields": {
+            "connect_timeout": "",
+            "reuse_addr": false,
+            "tcp_fast_open": false,
+            "tcp_multi_path": false,
+            "udp_fragment": false
+        },
+        "flow": "",
+        "multiplex": {
+            "brutal": {
+                "down_mbps": 0,
+                "enabled": false,
+                "up_mbps": 0
+            },
+            "enabled": false,
+            "max_connections": 0,
+            "max_streams": 0,
+            "min_streams": 0,
+            "padding": false,
+            "protocol": "",
+            "unspecified": true
+        },
+        "name": "🇫🇮 Finland | VLESS | Direct-h5Z2jQ",
+        "packet_encoding": "xudp",
+        "server": "fl.cheburnet.lol",
+        "server_port": 443,
+        "tls": {
+            "alpn": [
+                "http/1.1",
+                "h2"
+            ],
+            "certificate_path": "",
+            "client_certificate_path": "",
+            "client_key_path": "",
+            "disable_sni": false,
+            "ech": {
+                "config_path": "",
+                "enabled": false
+            },
+            "enabled": true,
+            "fragment": false,
+            "fragment_fallback_delay": "",
+            "insecure": false,
+            "max_version": "",
+            "min_version": "",
+            "reality": {
+                "enabled": false,
+                "public_key": "",
+                "short_id": ""
+            },
+            "record_fragment": false,
+            "server_name": "fl.cheburnet.lol",
+            "utls": {
+                "enabled": true,
+                "fingerprint": "chrome",
+                "supported": true
+            }
+        },
+        "transport": {
+            "early_data_header_name": "",
+            "host": "",
+            "idle_timeout": "",
+            "max_early_data": 0,
+            "method": "",
+            "path": "",
+            "ping_timeout": "",
+            "service_name": "",
+            "type": "tcp",
+            "xhttp_extra": "",
+            "xhttp_mode": ""
+        },
+        "uuid": "e482fe50-bc83-4692-b908-4c504a3de221"
+    },
+    "report": "",
+    "traffic": {
+        "dl": 1799176531,
+        "ul": 70916486
+    },
+    "type": "vless",
+    "ul": "",
+    "yc": 163
+}

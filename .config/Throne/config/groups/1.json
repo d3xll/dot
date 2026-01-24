@@ -1,0 +1,15 @@
+{
+    "archive": false,
+    "front_proxy_id": -1,
+    "id": 1,
+    "info": "upload=15315261553; download=386594057477; total=0; expire=0",
+    "landing_proxy_id": -1,
+    "lastup": 1768441612,
+    "manually_column_width": false,
+    "name": "fl.cheburnet.lol",
+    "profiles": [
+        0
+    ],
+    "skip_auto_update": false,
+    "url": "https://fl.cheburnet.lol:2096/sub/96f24nyhxhams4rl"
+}

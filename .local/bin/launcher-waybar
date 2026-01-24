@@ -1,0 +1,12 @@
+#!/bin/bash
+
+killall -9 waybar
+killall -9 swaync
+
+waybar &
+swaync &
+
+sleep 1
+
+notify-send "Test" "This is a test notification"
+
