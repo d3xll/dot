@@ -12,6 +12,7 @@
         "hyprland/workspaces"
     ],
     "modules-right": [
+        "wireplumber#source",
         "pulseaudio",
         "hyprland/language",
         "custom/notification"

@@ -4,7 +4,7 @@
     border: none;
     border-radius: 0px;
 
-    font-family: "Google Sans", "JetBrainsMono Nerd Font";
+    font-family: "Google Sans", "Symbols Nerd Font Mono";
     font-size: 12px;
     font-weight: 700;
 
@@ -64,10 +64,12 @@ tooltip label {
 #tray,
 #pulseaudio,
 #custom-notification,
-#language {
+#language,
+#wireplumber,
+#custom-updates {
     background-color: @background;
     color: @primary;
-    padding: 0 16px 0 16px;
+    padding: 0 14px 0 14px;
     margin: 0 0 0 4px;
     border-radius: 50px;
 
@@ -80,6 +82,7 @@ tooltip label {
 }
 
 #custom-arch {
+    font-size: 10px;
     margin: 0 0 0 8px;
     padding: 0 16px 0 16px;
 }
@@ -87,5 +90,4 @@ tooltip label {
 #custom-arch:hover,
 #custom-notification:hover {
     color: @secondary;
-    font-size: 14px;
 }

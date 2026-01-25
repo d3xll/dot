@@ -6,7 +6,7 @@
 
   "control-center-width": 380,
   "control-center-height": 860, 
-  "control-center-margin-top": 4,
+  "control-center-margin-top": 8,
   "control-center-margin-bottom": 0,
   "control-center-margin-right": 8,
   "control-center-margin-left": 0,
@@ -42,12 +42,12 @@
   ],
   "widget-config": {
     "title": {
-      "text": "Notifications",
+      "text": "Clear",
       "clear-all-button": true,
       "button-text": " 󰎟 "
     },
     "dnd": {
-      "text": "Do not disturb"
+      "text": "Mute"
     },
     "label": {
       "max-lines": 1,
@@ -64,16 +64,16 @@
     "buttons-grid": {
       "actions": [
         {
-          "label": "",
-          "command": "amixer set Master toggle"
+          "label": "",
+          "command": "pavucontrol"
         },
         {
-          "label": "",
-          "command": "amixer set Capture toggle"
+          "label": "",
+          "command": "~/.local/bin/check-arch-updates"
         },
         {
-          "label": "",
-          "command": "nm-connection-editor"
+          "label": "",
+          "command": "kitty -e btop"
         },
         {
           "label": "󰂯",
@@ -82,8 +82,11 @@
         {
           "label": "󰏘",
           "command": "nwg-look"
+        },
+        {
+          "label": "󰸉",
+          "command": "~/.local/bin/walset"
         }
-        
       ]
     }
   }
