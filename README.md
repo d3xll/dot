@@ -1,7 +1,7 @@
 > ***Read all the configs to understand how to manage your system now!***
 # Hyprland
 ## Material you | Light & Simple
-###### Version 2601
+###### Version 3101
 ---
 
 ![Image](/screenshoots/2.png)
@@ -23,6 +23,7 @@ swaync
 rofi
 btop
 fastfetch
+nautilus
 ```
 
 ## GTK 3/4
@@ -38,6 +39,12 @@ qt6ct-kde
 breeze-icons 
 breeze-gtk
 darkly-bin
+```
+
+## Bluetooth
+```
+bluez
+blueman
 ```
 
 ## Shell
@@ -56,11 +63,16 @@ google-sans
 ## Additional
 ```
 yay
-nautilus
 throne
+```
+
+```
 easyeffects
 pulseaudio
 pavucontrol
+```
+
+```
 cliphist
 wl-clip-persist
 ```
