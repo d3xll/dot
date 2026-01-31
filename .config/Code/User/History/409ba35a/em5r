@@ -1,0 +1,190 @@
+#!/bin/bash
+# ~/.local/bin/matugen-papirus
+
+INPUT_COLOR="${1#\#}"
+
+if [[ -z "$INPUT_COLOR" ]]; then
+    echo "Usage: matugen-papirus <hex_color>"
+    exit 1
+fi
+
+# Валидация HEX
+if [[ ! "$INPUT_COLOR" =~ ^[0-9a-fA-F]{6}$ ]]; then
+    echo "Error: Invalid hex color: $INPUT_COLOR"
+    exit 1
+fi
+
+# ─────────────────────────────────────────────────────────────────
+# Цвета Papirus
+# ─────────────────────────────────────────────────────────────────
+declare -A PAPIRUS_COLORS=(
+    ["adwaita"]="3584e4"
+    ["black"]="4f4f4f"
+    ["blue"]="5294e2"
+    ["bluegrey"]="607d8b"
+    ["breeze"]="5c8dca"
+    ["brown"]="ae8e6c"
+    ["carmine"]="b02640"
+    ["cyan"]="00bcd4"
+    ["darkcyan"]="008ba7"
+    ["deeporange"]="ff6e40"
+    ["green"]="87b158"
+    ["grey"]="8e8e8e"
+    ["indigo"]="5c6bc0"
+    ["magenta"]="ca5183"
+    ["nordic"]="5e81ac"
+    ["orange"]="f9a03f"
+    ["palebrown"]="c4a988"
+    ["paleorange"]="e6a679"
+    ["pink"]="f06292"
+    ["red"]="e25252"
+    ["teal"]="009688"
+    ["violet"]="7e57c2"
+    ["white"]="e4e4e4"
+    ["yaru"]="e95420"
+    ["yellow"]="ffcc00"
+)
+
+# ─────────────────────────────────────────────────────────────────
+# HEX → RGB
+# ─────────────────────────────────────────────────────────────────
+hex_to_rgb() {
+    local hex="${1,,}"  # lowercase
+    printf "%d %d %d" "0x${hex:0:2}" "0x${hex:2:2}" "0x${hex:4:2}"
+}
+
+# ─────────────────────────────────────────────────────────────────
+# RGB → HSL (лучше для сравнения цветов)
+# ─────────────────────────────────────────────────────────────────
+rgb_to_hsl() {
+    local r=$1 g=$2 b=$3
+    
+    # Нормализация 0-100
+    local r_norm=$((r * 100 / 255))
+    local g_norm=$((g * 100 / 255))
+    local b_norm=$((b * 100 / 255))
+    
+    # Min/Max
+    local max=$r_norm
+    local min=$r_norm
+    [[ $g_norm -gt $max ]] && max=$g_norm
+    [[ $b_norm -gt $max ]] && max=$b_norm
+    [[ $g_norm -lt $min ]] && min=$g_norm
+    [[ $b_norm -lt $min ]] && min=$b_norm
+    
+    # Lightness
+    local l=$(( (max + min) / 2 ))
+    
+    # Saturation
+    local s=0
+    local diff=$((max - min))
+    if [[ $diff -ne 0 ]]; then
+        if [[ $l -lt 50 ]]; then
+            s=$((diff * 100 / (max + min)))
+        else
+            s=$((diff * 100 / (200 - max - min)))
+        fi
+    fi
+    
+    # Hue
+    local h=0
+    if [[ $diff -ne 0 ]]; then
+        if [[ $max -eq $r_norm ]]; then
+            h=$(( ((g_norm - b_norm) * 60 / diff + 360) % 360 ))
+        elif [[ $max -eq $g_norm ]]; then
+            h=$(( (b_norm - r_norm) * 60 / diff + 120 ))
+        else
+            h=$(( (r_norm - g_norm) * 60 / diff + 240 ))
+        fi
+    fi
+    
+    # Нормализация hue
+    [[ $h -lt 0 ]] && h=$((h + 360))
+    
+    echo "$h $s $l"
+}
+
+# ─────────────────────────────────────────────────────────────────
+# Расстояние HSL (учитывает оттенок как главный фактор)
+# ─────────────────────────────────────────────────────────────────
+hsl_distance() {
+    local h1=$1 s1=$2 l1=$3
+    local h2=$4 s2=$5 l2=$6
+    
+    # Разница в hue (циклическая)
+    local dh=$((h1 - h2))
+    [[ $dh -lt 0 ]] && dh=$((-dh))
+    [[ $dh -gt 180 ]] && dh=$((360 - dh))
+    
+    local ds=$((s1 - s2))
+    [[ $ds -lt 0 ]] && ds=$((-ds))
+    
+    local dl=$((l1 - l2))
+    [[ $dl -lt 0 ]] && dl=$((-dl))
+    
+    # Если насыщенность низкая - цвет серый, hue не важен
+    if [[ $s1 -lt 15 ]] || [[ $s2 -lt 15 ]]; then
+        echo $((ds * 2 + dl * 3))
+    else
+        # Взвешенное: hue важнее всего, потом saturation, потом lightness
+        echo $((dh * 3 + ds * 2 + dl))
+    fi
+}
+
+# ─────────────────────────────────────────────────────────────────
+# Поиск ближайшего цвета
+# ─────────────────────────────────────────────────────────────────
+
+# Входной цвет
+read input_r input_g input_b <<< $(hex_to_rgb "$INPUT_COLOR")
+read input_h input_s input_l <<< $(rgb_to_hsl $input_r $input_g $input_b)
+
+echo "═══════════════════════════════════════════════════"
+echo "  DEBUG: Input Analysis"
+echo "═══════════════════════════════════════════════════"
+echo "  HEX: #$INPUT_COLOR"
+echo "  RGB: $input_r, $input_g, $input_b"
+echo "  HSL: H=$input_h° S=$input_s% L=$input_l%"
+echo ""
+
+min_dist=999999
+closest_name=""
+declare -A all_distances
+
+for name in "${!PAPIRUS_COLORS[@]}"; do
+    hex="${PAPIRUS_COLORS[$name]}"
+    
+    read pr pg pb <<< $(hex_to_rgb "$hex")
+    read ph ps pl <<< $(rgb_to_hsl $pr $pg $pb)
+    
+    dist=$(hsl_distance $input_h $input_s $input_l $ph $ps $pl)
+    all_distances[$name]=$dist
+    
+    if [[ $dist -lt $min_dist ]]; then
+        min_dist=$dist
+        closest_name="$name"
+    fi
+done
+
+# Показать топ-5 ближайших
+echo "  Top 5 matches:"
+for name in "${!all_distances[@]}"; do
+    echo "$name ${all_distances[$name]}"
+done | sort -t' ' -k2 -n | head -5 | while read n d; do
+    printf "    %-12s (distance: %d)\n" "$n" "$d"
+done
+
+echo ""
+echo "═══════════════════════════════════════════════════"
+echo "  RESULT: $closest_name"
+echo "═══════════════════════════════════════════════════"
+
+# Применение
+if command -v papirus-folders &> /dev/null; then
+    papirus-folders -C "$closest_name" --theme Papirus-Dark 2>/dev/null || \
+    papirus-folders -C "$closest_name" 2>/dev/null
+    echo "  ✓ Applied: $closest_name"
+else
+    echo "  ✗ papirus-folders not found"
+    exit 1
+fi

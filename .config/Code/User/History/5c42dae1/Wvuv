@@ -1,0 +1,26 @@
+#!/bin/bash
+# walset-backend
+
+if [ $# -ne 1 ]; then
+    echo "pls, usage: $0 <PATH>"
+    exit 1
+fi
+
+IMAGE="$1"
+
+#missing wallpaper = notification critical
+[ ! -f "$IMAGE" ] && { notify-send -u critical "walset" "file not found"; exit 1; }
+
+#swww daemon changing wallpaper
+swww img "$IMAGE" \
+    --transition-type grow \
+    --transition-duration 3 \
+    --transition-fps 60
+
+#matugen integration
+matugen image "$IMAGE" -m dark
+
+# reload bars and swaync
+reloader-bars
+
+sleep 1 & notify-send "󰸉  Walset" "${IMAGE##*/}"

@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# Подключаем настройки пользователя, чтобы подтянулись прокси, пути и алиасы
+[[ -f ~/.bashrc ]] && source ~/.bashrc
+
+LOG_FILE="$HOME/.local/share/update_checker.log"
+
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
+}
+
+# 1. Проверка интернета перед запуском (чтобы не спамить ошибками прокси)
+if ! curl -s --head --request GET http://www.google.com | grep "200 OK" > /dev/null; then
+    # Не пишем в лог при каждом запуске без сети, чтобы не раздувать файл
+    exit 0 
+fi
+
+# 2. Проверка обновлений Pacman
+pacman_raw=$(checkupdates 2>&1)
+exit_code_pacman=$?
+
+# 3. Проверка обновлений AUR
+aur_raw=$(yay -Qua 2>&1)
+exit_code_aur=$?
+
+# Логика обработки вывода (как в предыдущем варианте)
+if [ $exit_code_pacman -eq 0 ]; then
+    pacman_updates=$(echo "$pacman_raw" | sed '/^\s*$/d' | wc -l)
+else
+    log_message "ERROR (Pacman): $pacman_raw"
+    pacman_updates=0
+fi
+
+if [ $exit_code_aur -eq 0 ]; then
+    aur_updates=$(echo "$aur_raw" | sed '/^\s*$/d' | wc -l)
+elif [[ "$aur_raw" == *"could not find all required packages"* ]] || [ -z "$aur_raw" ]; then
+    aur_updates=0
+else
+    log_message "ERROR (AUR): $aur_raw"
+    aur_updates=0
+fi
+
+total=$((pacman_updates + aur_updates))
+
+# Финальное уведомление и лог
+if [[ "$total" -gt 0 ]]; then
+    log_message "SUCCESS: Found $total updates"
+    notify-send "   Updates" "Available: $total packages"
+fi

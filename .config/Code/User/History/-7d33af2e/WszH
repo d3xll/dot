@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+export http_proxy="http://127.0.0.1:2080"
+export https_proxy="socks5://://127.0.0.1:2080"
+export all_proxy="socks5://127.0.0.1:2080" 
+
+# Обновления из репозиториев
+pacman_updates=$(checkupdates | wc -l)
+
+# Обновления из AUR
+aur_updates=$(yay -Qua | wc -l)
+
+# Сумма
+total=$((pacman_updates + aur_updates))
+
+# Уведомление
+if [[ "$total" -gt 0 ]]; then
+    notify-send "󰏖 Updates" "Available: $total packages"
+    echo "$total"
+else
+    notify-send -u low " All good" "No updates available"
+    echo ""
+fi

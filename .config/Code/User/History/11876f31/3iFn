@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Путь к rofi
+ROFI="rofi -dmenu -i -p"
+
+# 1. Выбор режима (тёмная/светлая)
+mode=$(echo -e "Тёмная\nСветлая" | $ROFI "Режим темы")
+
+# Если отмена — выходим
+[ -z "$mode" ] && exit 0
+
+# Преобразуем в параметр для matugen
+if [ "$mode" = "Тёмная" ]; then
+    mode_lower="dark"
+else
+    mode_lower="light"
+fi
+
+# 2. Выбор схемы (полный актуальный список)
+schemes="Content\nExpressive\nFidelity\nFruit Salad\nMonochrome\nNeutral\nRainbow\nTonal Spot\nVibrant"
+scheme=$(echo -e "$schemes" | $ROFI "Схема Material You")
+
+# Если отмена — выходим
+[ -z "$scheme" ] && exit 0
+
+# Формируем параметр: scheme- + нижний регистр + дефисы вместо пробелов
+scheme_lower=$(echo "$scheme" | tr '[:upper:]' '[:lower:]' |
+tr ' ' '-')
+scheme_param="scheme-$scheme_lower"
+
+# Запуск matugen с текущими обоями
+matugen image current -t "$scheme_param" -m "$mode_lower"
+
+# Опционально: уведомление
+# notify-send "Тема применена" "$mode — $scheme"
+
+# Опционально: перезапуск нужных программ (раскомментируй по необходимости)
+# pkill -SIGUSR2 waybar
+# hyprctl dispatch exec "[float] kitty"  # пример обновления терминала
+
+exit 0

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Обновления из репозиториев
+pacman_updates=$(checkupdates | wc -l)
+
+# Обновления из AUR
+aur_updates=$(yay -Qua | wc -l)
+
+# Сумма
+total=$((pacman_updates + aur_updates))
+
+# Уведомление
+if [[ "$total" -gt 0 ]]; then
+    notify-send "󰏖 Updates" "Available: $total packages"
+else
+    notify-send -u low " All good" "No updates available"
+fi

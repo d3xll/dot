@@ -1,0 +1,18 @@
+2026-01-29 04:37:51.093 [info] Extension host with pid 45777 started
+2026-01-29 04:37:51.120 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2026-01-29 04:37:51.141 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2026-01-29 04:37:51.154 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:json'
+2026-01-29 04:37:51.160 [info] ExtensionService#_doActivateExtension vscode.extension-editing, startup: false, activationEvent: 'onLanguage:json'
+2026-01-29 04:37:51.171 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:json'
+2026-01-29 04:37:51.220 [info] ExtensionService#_doActivateExtension vscode.npm, startup: false, activationEvent: 'onLanguage:json'
+2026-01-29 04:37:51.431 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-01-29 04:37:51.443 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2026-01-29 04:37:51.481 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2026-01-29 04:37:51.569 [info] Eager extensions activated
+2026-01-29 04:37:51.570 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-01-29 04:37:51.572 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-01-29 04:37:51.585 [info] ExtensionService#_doActivateExtension bierner.color-info, startup: false, activationEvent: 'onStartupFinished'
+2026-01-29 04:37:51.588 [info] ExtensionService#_doActivateExtension PKief.material-icon-theme, startup: false, activationEvent: 'onStartupFinished'
+2026-01-29 04:37:51.598 [info] ExtensionService#_doActivateExtension rakib13332.material-code, startup: false, activationEvent: 'onStartupFinished'
+2026-01-29 04:38:52.104 [info] Extension host terminating: renderer closed the MessagePort
+2026-01-29 04:38:52.116 [info] Extension host with pid 45777 exiting with code 0

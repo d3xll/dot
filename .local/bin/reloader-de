@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Bar
+killall -9 waybar
+waybar &
+
+# Notification center
+swaync-client --reload-config --reload-css
+
+# DE \ Hyprland
+hyprctl reload

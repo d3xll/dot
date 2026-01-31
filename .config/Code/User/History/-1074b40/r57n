@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# set-wallpaper — меняет обои + цвета (pywal + matugen) + обновляет всё нужное
+
+# Проверка аргумента
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <path_to_image>"
+    exit 1
+fi
+
+IMAGE="$1"
+
+# Проверка существования файла
+if [ ! -f "$IMAGE" ]; then
+    notify-send -u critical "Wallpaper Error" "File not found: $IMAGE"
+    exit 1
+fi
+
+# Уведомление в начале
+notify-send "Changing Theme" "Applying new wallpaper and updating colors, please wait..."
+
+# Установка обоев через swww (с плавным центрированным переходом)
+swww img "$IMAGE" \
+    --transition-type center \
+    --transition-step 1 \
+    --transition-fps 60 \
+    --resize fit  # или crop / contain — по вкусу
+
+# Pywal — генерация цветов (light/dark, saturation, etc.)
+wal -i "$IMAGE" -n -s -t -e   # -n no reload, -s skip saturation, -t skip template, -e skip cache
+
+# Если у тебя NvChad + pywal интеграция (chadwal.py)
+# Раскомментируй, если используешь https://github.com/NvChad/pywal
+# python3 ~/.config/nvim/pywal/chadwal.py &> /dev/null &
+
+# Spicetify + pywal (если установлен pywal-spicetify)
+# pywal-spicetify Dribbblish   # ← раскомментируй, если у тебя именно эта утилита
+# или стандартный способ:
+# spicetify config current_theme Dribbblish
+# spicetify apply   # если нужно
+
+# Matugen (Material You цвета) — современный способ, часто заменяет pywal
+matugen image "$IMAGE" -m dark   # или -m light / -t vibrant / etc. (смотри matugen --help)
+
+# Перезапуск компонентов (если они читают цвета из файлов/переменных)
+pkill waybar
+waybar >/dev/null 2>&1 &
+
+# Если swaync (sway notification center)
+pkill swaync
+swaync >/dev/null 2>&1 &
+
+# Опционально: kitty, rofi, etc. — если они на pywal/matugen
+# pkill -USR1 kitty   # reload kitty
+# hyprctl reload      # если цвета в hyprland.conf
+
+notify-send "Theme Applied" "Wallpaper and theme updated successfully!"

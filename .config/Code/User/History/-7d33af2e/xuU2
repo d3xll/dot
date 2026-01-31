@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Принудительно задаём окружение
+export PATH="/usr/bin:/bin:/usr/local/bin:$HOME/.local/bin"
+export DISPLAY="${DISPLAY:-:0}"
+export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+export DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS:-unix:path=$XDG_RUNTIME_DIR/bus}"
+
+# Обновления из репозиториев
+pacman_updates=$(/usr/bin/checkupdates 2>/dev/null | wc -l)
+
+# Обновления из AUR
+aur_updates=$(/usr/bin/yay -Qua 2>/dev/null | wc -l)
+
+# Сумма
+total=$((pacman_updates + aur_updates))
+
+# Уведомление
+if [[ "$total" -gt 0 ]]; then
+    /usr/bin/notify-send "󰏕 Updates" "Available: $total packages"
+else
+    /usr/bin/notify-send -u low " All good" "No updates available"
+fi

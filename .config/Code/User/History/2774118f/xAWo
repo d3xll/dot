@@ -1,0 +1,30 @@
+#!/bin/bash
+
+WALLPAPER="$1"
+
+if [ -z "$WALLPAPER" ]; then
+  echo "Использование: $0 /path/to/wallpaper.jpg"
+  exit 1
+fi
+
+matugen image "$WALLPAPER" -m vibrant
+
+# Извлекаем primary (light, можно добавить dark)
+PRIMARY=$(matugen image "$WALLPAPER" --json light | jq -r '.colors.light.primary' | tr '[:lower:]' '[:upper:]')  # в верхний регистр для сравнения
+
+# Простой mapping на ближайший Papirus пресет (добавь/измени под себя)
+case "$PRIMARY" in
+  *FF* | *F0* | *E0* | *D0* ) COLOR="red" ;;      # Красноватые
+  *FF*00* | *F9* | *FF8* ) COLOR="pink" ;;       # Розовые/маджента
+  *00FF* | *0F0* | *0C0* ) COLOR="green" ;;      # Зелёные
+  *0000FF* | *00F* | *08F* ) COLOR="blue" ;;     # Синие
+  *FFFF00* | *FF0* | *FD0* ) COLOR="yellow" ;;   # Жёлтые
+  *FFA* | *F80* ) COLOR="orange" ;;              # Оранжевые
+  *00FFFF* | *0FF* ) COLOR="cyan" ;;             # Циан/бирюза
+  *A0A* | *808* | *999* ) COLOR="grey" ;;        # Серые
+  *) COLOR="blue" ;;                             # Дефолт
+esac
+
+papirus-folders -C "$COLOR" --theme Papirus
+
+echo "Применён ближайший пресет: $COLOR (на основе $PRIMARY)"

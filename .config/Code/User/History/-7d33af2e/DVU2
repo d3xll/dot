@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Явно задаём PATH
+export PATH="/usr/bin:/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
+
+# Полные пути к командам (на всякий случай)
+CHECKUPDATES="/usr/bin/checkupdates"
+YAY="/usr/bin/yay"
+NOTIFY="/usr/bin/notify-send"
+
+# Проверяем наличие команд
+if [[ ! -x "$CHECKUPDATES" ]]; then
+    $NOTIFY -u critical "Error" "checkupdates not found"
+    exit 1
+fi
+
+# Обновления из официальных репозиториев
+pacman_updates=$($CHECKUPDATES 2>/dev/null | wc -l)
+
+# Обновления из AUR
+if [[ -x "$YAY" ]]; then
+    aur_updates=$($YAY -Qua 2>/dev/null | wc -l)
+else
+    aur_updates=0
+fi
+
+# Суммируем
+total=$((pacman_updates + aur_updates))
+
+# Вывод
+if [[ "$total" -gt 0 ]]; then
+    echo "$total"
+    $NOTIFY "󰏕 Updates" "Available: $total packages ($pacman_updates repo + $aur_updates AUR)"
+else
+    echo ""
+    $NOTIFY -u low " It's all right" "There are no updates"
+fi

@@ -1,0 +1,93 @@
+@import 'colors.css';
+
+* {
+    border: none;
+    border-radius: 0px;
+
+    font-family: "Google Sans", "Symbols Nerd Font Mono";
+    font-size: 12px;
+    font-weight: 700;
+
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+window#waybar {
+    background: none;
+}
+
+tooltip {
+    background: @surface;
+    border:1px solid @primary;
+    border-radius:12px;
+}
+
+tooltip label {
+    color: @secondary;
+    padding: 6px;
+}
+
+#workspaces {
+    background-color: @surface;
+    padding: 5px 3px;
+    margin: 0 0 0 12px;
+    border-radius: 18px;
+}
+
+#workspaces button {
+    padding: 2px 12px;
+    margin: 0 2.5px;
+    border-radius: 50px;
+    background-color: @surface_container;
+    color: @secondary;
+    transition: all 0.25s ease-in-out;
+}
+
+#workspaces button.active {
+    background-color: @tertiary;
+    color: @primary;
+    min-width: 25px;
+    transition: all 0.25s ease-in-out;
+}
+
+#workspaces button:hover {
+    background-color: @on_surface;
+    color: @surface;
+    min-width: 50px;
+    border-radius: 16px;
+} 
+
+/* Others */
+#clock,
+#custom-arch,
+#tray,
+#pulseaudio,
+#custom-notification,
+#language,
+#wireplumber,
+#custom-updates {
+    background-color: @surface;
+    color: @primary;
+    padding: 0 14px 0 14px;
+    margin: 0 0 0 4px;
+    border-radius: 50px;
+
+    transition: all 0.45s ease-in-out;
+}
+
+/* End layouts */
+#custom-notification {
+    margin: 0 8px 0 4px;
+}
+
+#custom-arch {
+    font-size: 10px;
+    margin: 0 0 0 8px;
+    padding: 0 16px 0 16px;
+}
+
+#custom-arch:hover,
+#custom-notification:hover {
+    color: @secondary;
+}

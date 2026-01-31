@@ -1,0 +1,46 @@
+[config]
+#reload_apps = true          # Автоматическая перезагрузка приложений после смены темы
+#reload_gtk_theme = true     # Обновлять ли тему GTK
+
+[templates.gtk3]
+input_path = '~/.config/matugen/templates/gtk-colors.css'
+output_path = '~/.config/gtk-3.0/gtk.css'
+
+[templates.gtk4]
+input_path = '~/.config/matugen/templates/gtk-colors.css'
+output_path = '~/.config/gtk-4.0/gtk.css'
+
+[templates.color-scheme-qt]
+input_path = '~/.config/matugen/templates/Matugen-qt.colors'
+output_path = '~/.local/share/color-schemes/Matugen.colors'
+
+[templates.waybar]
+input_path = '~/.config/matugen/templates/colors.css'
+output_path = '~/.config/waybar/colors.css'
+
+[templates.hyprland]
+input_path = '~/.config/matugen/templates/hyprland-colors.conf'
+output_path = '~/.config/hypr/colors.conf'
+
+[templates.vscode]
+input_path = "~/.config/matugen/templates/vscode.json"
+output_path = "~/.cache/matugen/vscode-colors.json"
+post_hook = 'update-vscode'
+
+[templates.kitty]
+input_path = '~/.config/matugen/templates/kitty-colors.conf'
+output_path = '~/.config/kitty/themes/matugen-theme.conf'
+post_hook = "kitty +kitten themes --reload-in=all matugen-theme"
+
+[templates.rofi]
+input_path = '~/.config/matugen/templates/rofi-colors_git.rasi'
+output_path = '~/.config/rofi/colors/matugen-theme.rasi'
+
+[templates.swaync]
+input_path = '~/.config/matugen/templates/swaync.css'
+output_path = '~/.config/swaync/matugen-colors.css'
+
+[templates.papirus_icons]
+input_path = "~/.config/matugen/templates/papirus.sh"
+output_path = "~/.cache/matugen/papirus-color.sh"
+post_hook = "bash ~/.cache/matugen/papirus-color.sh"

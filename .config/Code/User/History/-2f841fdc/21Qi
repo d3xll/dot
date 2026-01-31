@@ -1,0 +1,231 @@
+#!/usr/bin/env bash
+
+# Модульный скрипт очистки Arch Linux
+# Запускать от root (sudo)
+# Можно вызывать отдельные функции: sudo arch-cleanup.sh pacman|aur|cache|journal|memory|all
+
+set -euo pipefail
+
+# ────────────────────────────────────────────────
+#   Функция для вывода тематического ASCII-арта
+# ────────────────────────────────────────────────
+show_banner() {
+    local theme="$1"
+
+    case "$theme" in
+        start)
+            cat << 'EOF'
+
+  ___  ______  _____  _   _   _____  _      _____  ___   _   _  ___________ 
+ / _ \ | ___ \/  __ \| | | | /  __ \| |    |  ___|/ _ \ | \ | ||  ___| ___ \
+/ /_\ \| |_/ /| /  \/| |_| | | /  \/| |    | |__ / /_\ \|  \| || |__ | |_/ /
+|  _  ||    / | |    |  _  | | |    | |    |  __||  _  || . ` ||  __||    / 
+| | | || |\ \ | \__/\| | | | | \__/\| |____| |___| | | || |\  || |___| |\ \ 
+\_| |_/\_| \_| \____/\_| |_/  \____/\_____/\____/\_| |_/\_| \_/\____/\_| \_|                                                                    
+                    Полная очистка системы Arch Linux (v2501)
+EOF
+            ;;
+
+        pacman)
+            cat << 'EOF'
+
+______  ___  _____ ___  ___  ___   _   _  
+| ___ \/ _ \/  __ \|  \/  | / _ \ | \ | | 
+| |_/ / /_\ \ /  \/| .  . |/ /_\ \|  \| | 
+|  __/|  _  | |    | |\/| ||  _  || . ` | 
+| |   | | | | \__/\| |  | || | | || |\  | 
+\_|   \_| |_/\____/\_|  |_/\_| |_/\_| \_/ 
+Очистка pacman + кэш + сироты
+EOF
+            ;;
+
+        aur)
+            cat << 'EOF'
+
+  ___  _   _______ 
+ / _ \| | | | ___ \
+/ /_\ \ | | | |_/ /
+|  _  | | | |    / 
+| | | | |_| | |\ \ 
+\_| |_/\___/\_| \_|
+AUR (yay / paru) — очистка кэша и сирот
+EOF
+            ;;
+
+        cache)
+            cat << 'EOF'
+
+ _____   ___  _____  _   _  _____ 
+/  __ \ / _ \/  __ \| | | ||  ___|
+| /  \// /_\ \ /  \/| |_| || |__  
+| |    |  _  | |    |  _  ||  __| 
+| \__/\| | | | \__/\| | | || |___ 
+ \____/\_| |_/\____/\_| |_/\____/ 
+Пользовательские .cache / thumbnails / pip / npm
+EOF
+            ;;
+
+        journal)
+            cat << 'EOF'
+ _     _____ _____  _____ 
+| |   |  _  |  __ \/  ___|
+| |   | | | | |  \/\ `--. 
+| |   | | | | | __  `--. \
+| |___\ \_/ / |_\ \/\__/ /
+\_____/\___/ \____/\____/         
+Очистка systemd-journal (логи)
+EOF
+            ;;
+
+        memory)
+            cat << 'EOF'
+
+___  ___ ________  ________________   __
+|  \/  ||  ___|  \/  |  _  | ___ \ \ / /
+| .  . || |__ | .  . | | | | |_/ /\ V / 
+| |\/| ||  __|| |\/| | | | |    /  \ /  
+| |  | || |___| |  | \ \_/ / |\ \  | |  
+\_|  |_/\____/\_|  |_/\___/\_| \_| \_/  
+Очистка RAM cache (drop_caches)
+EOF
+            ;;
+
+        finish)
+            cat << 'EOF'
+
+     ██████╗  ██████╗ ███╗   ██╗███████╗
+    ██╔════╝ ██╔═══██╗████╗  ██║██╔════╝
+    ██║  ███╗██║   ██║██╔██╗ ██║███████╗
+    ██║   ██║██║   ██║██║╚██╗██║╚════██║
+    ╚██████╔╝╚██████╔╝██║ ╚████║███████║
+     ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+                Очистка успешно завершена!
+EOF
+            ;;
+    esac
+
+    echo
+}
+
+# --------------------- Функции ---------------------
+
+cleanup_pacman() {
+    show_banner "pacman"
+
+    if ! command -v paccache >/dev/null; then
+        echo "paccache не найден. Установите pacman-contrib: pacman -S pacman-contrib"
+        return
+    fi
+
+    # Удаляем кэш всех удалённых пакетов
+    paccache -ruk0
+
+    # Оставляем только последние 3 версии установленных пакетов
+    paccache -rk3
+
+    # Удаление сиротских (orphaned) пакетов из официальных репозиториев
+    local orphans
+    orphans=$(pacman -Qtdq)
+    if [[ -n "$orphans" ]]; then
+        echo "Удаляем сиротские пакеты pacman: $orphans"
+        pacman -Rns $orphans --noconfirm
+    else
+        echo "Сиротских пакетов pacman нет"
+    fi
+}
+
+cleanup_aur() {
+    show_banner "aur"
+    echo "=== Очистка AUR (yay/paru) ==="
+
+    local aur_helper=""
+    if command -v yay >/dev/null; then
+        aur_helper="yay"
+    elif command -v paru >/dev/null; then
+        aur_helper="paru"
+    else
+        echo "Ни yay, ни paru не найдены. Пропускаем очистку AUR."
+        return
+    fi
+
+    echo "Используем $aur_helper"
+
+    # Очистка кэша AUR-пакетов
+    "$aur_helper" -Sc --noconfirm || true
+
+    # Удаление сиротских AUR-пакетов (зависимости, которые больше не нужны)
+    local aur_orphans
+    aur_orphans=$("$aur_helper" -Qdtq)
+    if [[ -n "$aur_orphans" ]]; then
+        echo "Удаляем сиротские AUR-пакеты: $aur_orphans"
+        "$aur_helper" -Rns $aur_orphans --noconfirm
+    else
+        echo "Сиротских AUR-пакетов нет"
+    fi
+}
+
+cleanup_cache() {
+    show_banner "cache"
+
+    # Миниатюры (thumbnails) — безопасно удалять полностью
+    find /home -type d -path "*/.cache/thumbnails" -exec rm -rf {} + 2>/dev/null || true
+
+    # pip cache (если установлен pip)
+    if command -v pip >/dev/null; then
+        echo "Очистка pip cache..."
+        pip cache purge || true
+    fi
+
+    # npm cache (если установлен npm)
+    if command -v npm >/dev/null; then
+        echo "Очистка npm cache..."
+        npm cache clean --force || true
+    fi
+
+    # Общий кэш thumbnail для root (редко, но бывает)
+    rm -rf /root/.cache/thumbnails/* 2>/dev/null || true
+
+    # Другие часто ненужные кэши (можно добавить/убрать по вкусу)
+    rm -rf ~/.cache/yay/*  # если хотите очистить кэш сборки AUR
+}
+
+cleanup_journal() {
+    show_banner "journal"
+
+    # Оставляем логи за последние 4 недели (можно изменить на 2weeks или 500M)
+    journalctl --vacuum-time=4weeks
+    journalctl --vacuum-size=500M
+}
+
+cleanup_memory() {
+    show_banner "memory"
+
+    sync
+    echo 3 > /proc/sys/vm/drop_caches
+    echo "Кэш памяти освобождён"
+}
+
+# --------------------- Основная логика ---------------------
+
+main() {
+    show_banner         "start"
+    cleanup_pacman      || true 
+    cleanup_aur         || true
+    cleanup_cache       || true
+    cleanup_journal     || true
+    cleanup_memory      || true
+}
+
+# Поддержка вызова отдельных функций через аргумент
+if [[ $# -eq 1 ]]; then
+    case "$1" in
+        pacman)   cleanup_pacman ;;
+        aur)      cleanup_aur ;;
+        cache)    cleanup_cache ;;
+        journal)  cleanup_journal ;;
+        memory)   cleanup_memory ;;
+        all|*)    main ;;
+    esac
+else
+    main
+fi

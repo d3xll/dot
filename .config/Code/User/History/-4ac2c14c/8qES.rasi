@@ -1,0 +1,16 @@
+/**
+ *
+ * Author : Aditya Shakya (adi1090x)
+ * Github : @adi1090x
+ * 
+ * Fonts
+ *
+ **/
+
+* {
+    font: "Google Sans 10";
+}
+
+button {
+    font: "Symbols Nerd Font Mono ";
+}

@@ -1,0 +1,32 @@
+#!/bin/bash
+# walset-backend — применение выбранного обоев + цвета
+
+if [ $# -ne 1 ]; then
+    echo "pls, usage: $0 <yourdir/image.format>"
+    exit 1
+fi
+
+IMAGE="$1"
+
+[ ! -f "$IMAGE" ] && { notify-send -u critical "Error" "File not found"; exit 1; }
+
+swww img "$IMAGE" \
+    --transition-type grow \
+    --transition-duration 3 \
+    --transition-fps 60
+    
+# pywal integration
+# wal -i "$IMAGE" -n -q -t   # quiet, no reload, skip template
+
+# matugen (часто лучше pywal в 2026)
+matugen image "$IMAGE" -m dark
+
+# Перезапуски
+pkill waybar; waybar >/dev/null 2>&1 &
+pkill swaync; swaync >/dev/null 2>&1 &
+
+# Если NvChad + chadwal
+# python3 ~/.config/nvim/pywal/chadwal.py &>/dev/null &
+
+sleep 1
+notify-send "walset" "applied: ${IMAGE##*/}"

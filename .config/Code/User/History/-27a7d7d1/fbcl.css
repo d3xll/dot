@@ -1,0 +1,13 @@
+/*
+* GTK Colors
+* Generated with Matugen
+*/
+
+@define-color background        {{colors.surface_dim.default.hex}};
+@define-color background-alt    {{colors.surface_container_low.default.hex}};
+@define-color background-on    {{colors.surface_on_background.hex}};
+@define-color selected          {{colors.primary.default.hex}};
+@define-color text              {{colors.primary.default.hex}};
+@define-color hover             {{colors.secondary.default.hex}};
+@define-color urgent            {{colors.error.default.hex}};
+  

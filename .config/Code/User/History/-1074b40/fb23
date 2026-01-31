@@ -1,0 +1,19 @@
+#!/bin/bash
+
+WALL_DIR="$HOME/Wallpapers"
+CWD="$(pwd)"
+
+cd "$WALL_DIR" || exit 1
+
+
+SELECTED_WALL=$(fd -e jpg -e jpeg -e png -e gif . | \
+    rofi -dmenu -p "Select wallpaper" -i -theme-str 'window {width: 60%;}')
+
+# Если ничего не выбрано — выход
+[ -z "$SELECTED_WALL" ] && exit 0
+
+# Переходим обратно и запускаем бэкенд
+cd "$CWD" || exit 1
+
+# Запуск бэкенда (можно передать полный путь)
+walset-backend "$WALL_DIR/$SELECTED_WALL"

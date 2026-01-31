@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Селектор анимаций для Hyprland
+# Папка с анимациями
+ANIM_DIR="$HOME/.config/hypr/source/animations"
+
+# Файл активной анимации (тот, который sourced в hyprland.conf)
+ACTIVE_FILE="$ANIM_DIR/active-animation.conf"
+
+# Проверка существования папки
+if [ ! -d "$ANIM_DIR" ]; then
+    notify-send -u critical "Hypr Animations Selector" "Dir not found: $ANIM_DIR"
+    exit 1
+fi
+
+# Твоя тема rofi (измени, если нужно; если не используешь — закомментируй строку с -theme)
+ROFI_THEME="$HOME/.config/rofi/launchers/type-1/style-11.rasi"
+ROFI="rofi -dmenu -i -p"
+
+# Если тема существует — добавляем её
+[ -f "$ROFI_THEME" ] && ROFI="$ROFI -theme $ROFI_THEME"
+
+# Находим все .conf файлы в папке (кроме active-animation.conf, чтобы не путаться)
+# Если хочешь видеть и active — удали grep -v
+files=$(find "$ANIM_DIR" -maxdepth 1 -type f -name "*.conf" ! -name "active-animation.conf" | xargs -n 1 basename | sort)
+
+# Если нужно показать текущую активную — добавим её в список с пометкой ★
+current=$(basename "$(readlink -f "$ACTIVE_FILE" 2>/dev/null || echo "none")")
+if [ -f "$ACTIVE_FILE" ] && [ "$current" != "none" ]; then
+    # Заменяем имя текущей на "★ Текущая: имя"
+    marked_files=$(echo "$files" | sed "s/^${current}$/★ Current: ${current}/")
+else
+    marked_files=$files
+    current="нет"
+fi
+
+# Выбор через rofi
+selected=$(echo -e "$marked_files" | $ROFI "Анимации Hyprland")
+
+# Отмена
+[ -z "$selected" ] && exit 0
+
+# Убираем пометку ★ Текущая: если выбрали текущую
+selected_clean=$(echo "$selected" | sed 's/^★ Текущая: //')
+
+# Полный путь к выбранному файлу
+selected_path="$ANIM_DIR/$selected_clean"
+
+# Проверка существования
+[ ! -f "$selected_path" ] && { notify-send -u critical "Hypr Animations" "Файл не найден: $selected_clean"; exit 1; }
+
+# Делаем symlink (перезапись если уже есть)
+ln -sf "$selected_path" "$ACTIVE_FILE"
+
+# Перезагружаем конфиг Hyprland
+hyprctl reload
+
+# Уведомление
+notify-send "Hypr Animations" "Переключено на: $selected_clean"
+
+exit 0

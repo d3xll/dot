@@ -1,0 +1,30 @@
+{
+  "material-code.colors": {
+    "primary": "#94d5a9",
+    "onPrimary": "#00391f",
+    "primaryContainer": "#0c5130",
+    "onPrimaryContainer": "#aff2c4",
+    "secondary": "#b5ccba",
+    "onSecondary": "#213528",
+    "secondaryContainer": "#374b3d",
+    "onSecondaryContainer": "#d1e8d5",
+    "tertiary": "#a3cddb",
+    "onTertiary": "#033641",
+    "tertiaryContainer": "#214c58",
+    "onTertiaryContainer": "#bfe9f8",
+    "error": "#ffb4ab",
+    "onError": "#690005",
+    "errorContainer": "#93000a",
+    "onErrorContainer": "#ffdad6",
+    "surface": "#0f1511",
+    "onSurface": "#dfe4dd",
+    "surfaceVariant": "#414942",
+    "onSurfaceVariant": "#c0c9c0",
+    "outline": "#8a938b",
+    "outlineVariant": "#414942",
+    "inverseSurface": "#dfe4dd",
+    "inverseOnSurface": "#2c322d",
+    "inversePrimary": "#2b6a46"
+  },
+  "http.proxy": "http://127.0.0.1:2080"
+}

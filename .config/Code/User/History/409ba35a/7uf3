@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Скрипт для изменения цвета папок Papirus под primary цвет из matugen
+# Использование: matugen-papirus /path/to/wallpaper.jpg dark
+# Варианты: light | dark | amoled
+
+wallpaper="$1"
+mode="$2"  # light, dark или amoled
+
+if [[ -z "$wallpaper" || -z "$mode" ]]; then
+  echo "Использование: $0 <путь_к_обоям> <light|dark|amoled>"
+  exit 1
+fi
+
+if [[ ! -f "$wallpaper" ]]; then
+  echo "Файл обоев не найден: $wallpaper"
+  exit 1
+fi
+
+# Генерируем цвета matugen и получаем JSON
+json_output=$(matugen image "$wallpaper" --json hex)
+
+# Извлекаем primary цвет
+primary=$(echo "$json_output" | jq -r ".colors.\"$mode\".primary")
+
+if [[ "$primary" == "null" || -z "$primary" ]]; then
+  echo "Ошибка: не удалось получить primary цвет для режима $mode"
+  exit 1
+fi
+
+# Добавляем # если его нет (matugen иногда выдаёт без #)
+[[ "$primary" != \#* ]] && primary="#$primary"
+
+# Выбираем тему Papirus (light → Papirus, dark/amoled → Papirus-Dark)
+case "$mode" in
+  light)
+    theme="Papirus"
+    ;;
+  *)
+    theme="Papirus-Dark"
+    ;;
+esac
+
+# Применяем цвет
+papirus-folders -C "$primary" --theme "$theme"
+
+echo "Готово! Цвет папок изменён на $primary ($theme)"
+echo "Перезайди в сессию или обнови иконки (например, Alt+F2 → r в Plasma/GNOME)"

@@ -1,0 +1,30 @@
+#!/bin/bash
+# walset-backen
+
+if [ $# -ne 1 ]; then
+    echo "pls, usage: $0 <yourdir/image.format>"
+    exit 1
+fi
+
+IMAGE="$1"
+
+[ ! -f "$IMAGE" ] && { notify-send -u critical "walset" "file not found"; exit 1; }
+
+swww img "$IMAGE" \
+    --transition-type grow \
+    --transition-duration 3 \
+    --transition-fps 60
+    
+# pywal integration
+# wal -i "$IMAGE" -n -q -t   # quiet, no reload, skip template
+
+#matugen integration
+matugen image "$IMAGE" -m dark
+
+# Перезапуски
+#pkill waybar; waybar >/dev/null 2>&1 &
+#pkill swaync; swaync >/dev/null 2>&1 &
+
+
+sleep 1
+notify-send "walset" "${IMAGE##*/}"

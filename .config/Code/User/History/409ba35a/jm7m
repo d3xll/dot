@@ -1,0 +1,83 @@
+#!/bin/bash
+# Аргумент = путь к файлу
+FILE="$1"
+
+if [[ -z "$FILE" ]]; then
+    echo "Usage: matugen-papirus <file_with_hex>"
+    exit 1
+fi
+
+if [[ ! -f "$FILE" ]]; then
+    echo "Error: File not found: $FILE"
+    exit 1
+fi
+
+# Читаем первую строку и извлекаем HEX
+HEX=$(head -1 "$FILE" | grep -oE '[0-9a-fA-F]{6}' | head -1)
+
+if [[ -z "$HEX" ]]; then
+    echo "Error: No valid HEX color found in first line"
+    exit 1
+fi
+
+echo "File: $FILE"
+echo "Color: #$HEX"
+
+# HEX → RGB → Hue
+r=$((16#${HEX:0:2}))
+g=$((16#${HEX:2:2}))
+b=$((16#${HEX:4:2}))
+
+# Min/Max
+max=$r; min=$r
+(( g > max )) && max=$g
+(( b > max )) && max=$b
+(( g < min )) && min=$g
+(( b < min )) && min=$b
+
+diff=$((max - min))
+sat=$((max == 0 ? 0 : diff * 100 / max))
+
+# Hue
+if (( diff == 0 )); then
+    hue=0
+elif (( max == r )); then
+    hue=$(( ((g - b) * 60 / diff + 360) % 360 ))
+elif (( max == g )); then
+    hue=$(( (b - r) * 60 / diff + 120 ))
+else
+    hue=$(( (r - g) * 60 / diff + 240 ))
+fi
+
+echo "RGB: $r, $g, $b | Hue: $hue° | Sat: $sat%"
+
+# Определение цвета
+if (( sat < 15 )); then
+    if (( max < 80 )); then
+        COLOR="black"
+    elif (( max > 200 )); then
+        COLOR="white"
+    else
+        COLOR="grey"
+    fi
+else
+    if   (( hue < 15 ));  then COLOR="red"
+    elif (( hue < 40 ));  then COLOR="deeporange"
+    elif (( hue < 55 ));  then COLOR="orange"
+    elif (( hue < 70 ));  then COLOR="yellow"
+    elif (( hue < 150 )); then COLOR="green"
+    elif (( hue < 185 )); then COLOR="teal"
+    elif (( hue < 210 )); then COLOR="cyan"
+    elif (( hue < 250 )); then COLOR="blue"
+    elif (( hue < 280 )); then COLOR="indigo"
+    elif (( hue < 320 )); then COLOR="violet"
+    elif (( hue < 345 )); then COLOR="magenta"
+    else COLOR="red"
+    fi
+fi
+
+echo "Selected: $COLOR"
+papirus-folders -C "$COLOR" --theme Papirus-Dark 2>/dev/null || \
+papirus-folders -C "$COLOR" 2>/dev/null
+
+echo "Done!"

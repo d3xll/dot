@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Путь к rofi (если нужно, можно добавить тему)
+ROFI="rofi -dmenu -i -p"
+
+# 1. Выбор режима (dark/light)
+mode=$(echo -e "Dark\nLight" | $ROFI "Режим темы")
+
+# Если отмена — выходим
+[ -z "$mode" ] && exit 0
+
+# Приводим к нижнему регистру для matugen
+mode_lower=$(echo "$mode" | tr '[:upper:]' '[:lower:]')
+
+# 2. Выбор схемы
+schemes="Monochrome\nNeutral\nTonal Spot\nVibrant\nExpressive\nFruit Salad\nRainbow\nContent"
+scheme=$(echo -e "$schemes" | $ROFI "Схема Material You")
+
+# Если отмена — выходим
+[ -z "$scheme" ] && exit 0
+
+# Приводим к нижнему регистру и заменяем пробелы на дефисы
+scheme_param=$(echo "$scheme" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+
+# Запуск matugen с текущими обоями
+matugen wallpaper current -t "$scheme_param" -m "$mode_lower"
+
+# Опционально: можно добавить уведомление или перезапуск программ
+# notify-send "Тема применена" "$mode $scheme"
+# Или перезапуск waybar/eww и т.д., если нужно
+# pkill -SIGUSR2 waybar  # пример для waybar
+
+exit 0

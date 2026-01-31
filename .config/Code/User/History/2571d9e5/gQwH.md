@@ -1,0 +1,65 @@
+> ***Read all the configs to understand how to manage your system now!***
+# Hyprland
+## Material you | Light & Simple
+###### Version 2401
+---
+
+![Image](/screenshoots/2.png)
+![Image](/screenshoots/3.png)
+![Image](/screenshoots/1.png)
+
+---
+
+# Packages
+## General
+```
+matugen
+hyprland
+kitty
+swww
+waybar
+swaync
+rofi
+btop
+fastfetch
+```
+
+## GTK 3/4
+```
+adw-gtk-theme
+nwg-look
+```
+
+## Qt 5/6
+```
+qt5ct-kde
+qt6ct-kde
+breeze-icons 
+breeze-gtk
+darkly-bin
+```
+
+## Shell
+```
+github.com/romkatv/powerlevel10k
+zsh
+oh-my-zsh
+```
+
+## Additional
+```
+nautilus
+throne
+easyeffects
+pulseaudio
+pavucontrol
+cliphist
+wl-clip-persist
+```
+
+---
+# How to install
+> All actions in the terminal
+1. ```git clone --depth 1 https://github.com/d3xll/dot ```
+2. ```cd dot/```
+3. ```./install.sh```

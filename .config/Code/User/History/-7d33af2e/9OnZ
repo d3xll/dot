@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+LOG_FILE="$HOME/update_checker.log"
+
+# Функция для логирования (добавляет дату и записывает всё в файл)
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
+}
+
+# 1. Пробуем получить обновления из репозиториев
+# Перенаправляем ошибки (2) туда же, куда и вывод (1), и сохраняем в переменную
+pacman_raw=$(checkupdates 2>&1)
+exit_code_pacman=$?
+
+# 2. Пробуем получить обновления из AUR
+aur_raw=$(yay -Qua 2>&1)
+exit_code_aur=$?
+
+# Обработка ошибок pacman
+if [ $exit_code_pacman -eq 0 ]; then
+    pacman_updates=$(echo "$pacman_raw" | sed '/^\s*$/d' | wc -l)
+else
+    log_message "ERROR (Pacman): $pacman_raw"
+    pacman_updates=0
+fi
+
+# Обработка ошибок AUR
+if [ $exit_code_aur -eq 0 ]; then
+    aur_updates=$(echo "$aur_raw" | sed '/^\s*$/d' | wc -l)
+elif [ $exit_code_aur -eq 1 ] && [[ "$aur_raw" == *"could not find all required packages"* ]]; then
+    # yay часто выдает ошибку 1, если обновлений просто нет - это нормально
+    aur_updates=0
+else
+    log_message "ERROR (AUR): $aur_raw"
+    aur_updates=0
+fi
+
+total=$((pacman_updates + aur_updates))
+
+# Логируем успешное выполнение
+log_message "Checked: $total updates (Pacman: $pacman_updates, AUR: $aur_updates)"
+
+# Уведомление
+if [[ "$total" -gt 0 ]]; then
+    notify-send "   Updates" "Available: $total packages"
+else
+    notify-send -u low " All good" "No updates available"
+fi

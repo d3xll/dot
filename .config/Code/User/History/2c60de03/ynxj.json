@@ -1,0 +1,60 @@
+{
+  "material-code.colors": {
+    "primary": "{{colors.primary.default.hex}}",
+    "onPrimary": "{{colors.on_primary.default.hex}}",
+    "primaryContainer": "{{colors.primary_container.default.hex}}",
+    "onPrimaryContainer": "{{colors.on_primary_container.default.hex}}",
+    "secondary": "{{colors.secondary.default.hex}}",
+    "onSecondary": "{{colors.on_secondary.default.hex}}",
+    "secondaryContainer": "{{colors.secondary_container.default.hex}}",
+    "onSecondaryContainer": "{{colors.on_secondary_container.default.hex}}",
+    "tertiary": "{{colors.tertiary.default.hex}}",
+    "onTertiary": "{{colors.on_tertiary.default.hex}}",
+    "tertiaryContainer": "{{colors.tertiary_container.default.hex}}",
+    "onTertiaryContainer": "{{colors.on_tertiary_container.default.hex}}",
+    "error": "{{colors.error.default.hex}}",
+    "onError": "{{colors.on_error.default.hex}}",
+    "errorContainer": "{{colors.error_container.default.hex}}",
+    "onErrorContainer": "{{colors.on_error_container.default.hex}}",
+    "surface": "{{colors.surface.default.hex}}",
+    "onSurface": "{{colors.on_surface.default.hex}}",
+    "surfaceVariant": "{{colors.surface_variant.default.hex}}",
+    "onSurfaceVariant": "{{colors.on_surface_variant.default.hex}}",
+    "outline": "{{colors.outline.default.hex}}",
+    "outlineVariant": "{{colors.outline_variant.default.hex}}",
+    "inverseSurface": "{{colors.inverse_surface.default.hex}}",
+    "inverseOnSurface": "{{colors.inverse_on_surface.default.hex}}",
+    "inversePrimary": "{{colors.inverse_primary.default.hex}}"
+
+    // ── Syntax highlighting ──────────────────────────────────────────────────────
+    // Комментарии — приглушённый, сероватый (очень комфортно для глаз)
+    "syntax.comment": "{{colors.on_surface_variant.default.hex}}",
+
+    // Строки — основной акцентный цвет (primary), выглядит ярко и современно
+    "syntax.string": "{{colors.primary.default.hex}}",
+
+    // Ключевые слова, операторы, if/else/for и т.д. — secondary (часто фиолетовый/розовый тон)
+    "syntax.keyword": "{{colors.secondary.default.hex}}",
+
+    // Переменные, теги HTML, имена в JSX — on_primary (контрастный к primary)
+    "syntax.variable": "{{colors.on_primary.default.hex}}",
+
+    // Атрибуты HTML, CSS-селекторы — outline (тонкий серо-синий/серо-фиолетовый)
+    "syntax.attribute": "{{colors.outline.default.hex}}",
+
+    // Свойства объектов, CSS-свойства — tertiary (третий акцент, часто бирюзовый/зелёный)
+    "syntax.property": "{{colors.tertiary.default.hex}}",
+
+    // Функции, методы, значения в CSS — success (зелёный тон, позитивно и выделяется)
+    "syntax.function": "{{colors.success.default.hex}}",
+
+    // Числа, константы, типы (bool, null, int и т.д.) — warning (жёлтый/оранжевый акцент)
+    "syntax.constant": "{{colors.warning.default.hex}}",
+
+    // Скобки (bracket pair coloring) — делаем градацию по surface_variant для мягкого радужного эффекта
+    "syntax.bracket1": "{{colors.primary.fixed.hex}}",
+    "syntax.bracket2": "{{colors.secondary.fixed.hex}}",
+    "syntax.bracket3": "{{colors.tertiary.fixed.hex}}",
+    "syntax.bracket4": "{{colors.primary.fixed_dim.hex}}"
+  }
+}

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Обновления из официальных репозиториев (безопасно, не трогает базы)
+pacman_updates=$(checkupdates 2>/dev/null | wc -l)
+
+# Обновления из AUR (yay)
+aur_updates=$(yay -Qua 2>/dev/null | wc -l)
+
+# Суммируем
+total=$((pacman_updates + aur_updates))
+
+# Выводим только если есть обновления (иначе модуль скроется)
+if [[ "$total" -gt 0 ]]; then
+    echo "$total"
+else
+    echo ""  # или "0", если хотите всегда показывать
+fi

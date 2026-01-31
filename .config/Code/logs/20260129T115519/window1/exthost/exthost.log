@@ -1,0 +1,21 @@
+2026-01-29 11:55:20.869 [info] Extension host with pid 5233 started
+2026-01-29 11:55:20.869 [info] Skipping acquiring lock for /home/kys/.config/Code/User/workspaceStorage/16e6494b6a877491d0fad7a12bc8cead.
+2026-01-29 11:55:20.936 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2026-01-29 11:55:20.958 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2026-01-29 11:55:20.970 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-01-29 11:55:20.975 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-01-29 11:55:21.025 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-01-29 11:55:21.299 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-01-29 11:55:21.312 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2026-01-29 11:55:21.349 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2026-01-29 11:55:21.462 [info] Eager extensions activated
+2026-01-29 11:55:21.465 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-01-29 11:55:21.466 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-01-29 11:55:21.480 [info] ExtensionService#_doActivateExtension bierner.color-info, startup: false, activationEvent: 'onStartupFinished'
+2026-01-29 11:55:21.484 [info] ExtensionService#_doActivateExtension PKief.material-icon-theme, startup: false, activationEvent: 'onStartupFinished'
+2026-01-29 11:55:21.494 [info] ExtensionService#_doActivateExtension rakib13332.material-code, startup: false, activationEvent: 'onStartupFinished'
+2026-01-29 11:55:27.879 [info] ExtensionService#_doActivateExtension vscode.extension-editing, startup: false, activationEvent: 'onLanguage:json'
+2026-01-29 11:55:27.888 [info] ExtensionService#_doActivateExtension vscode.npm, startup: false, activationEvent: 'onLanguage:json'
+2026-01-29 11:55:28.241 [info] ExtensionService#_doActivateExtension vscode.css-language-features, startup: false, activationEvent: 'onLanguage:css'
+2026-01-29 12:10:12.273 [info] Extension host terminating: renderer closed the MessagePort
+2026-01-29 12:10:12.299 [info] Extension host with pid 5233 exiting with code 0

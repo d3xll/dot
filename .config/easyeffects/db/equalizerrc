@@ -1,6 +1,5 @@
 [soe][Equalizer#0]
 balance=-0.3
-bypass=true
 numBands=14
 
 [soe][Equalizer#0#left]
@@ -156,6 +155,7 @@ band9Mode=6
 band9Q=2.067659378051758
 
 [soe][Equalizer#1]
+bypass=true
 numBands=14
 
 [soe][Equalizer#1#left]

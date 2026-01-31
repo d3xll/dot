@@ -1,0 +1,60 @@
+#!/bin/bash
+
+HEX="${1#\#}"
+
+# HEX → RGB → Hue
+r=$((16#${HEX:0:2}))
+g=$((16#${HEX:2:2}))
+b=$((16#${HEX:4:2}))
+
+# Находим min/max
+max=$r; min=$r
+(( g > max )) && max=$g
+(( b > max )) && max=$b
+(( g < min )) && min=$g
+(( b < min )) && min=$b
+
+diff=$((max - min))
+sat=$((max == 0 ? 0 : diff * 100 / max))
+
+# Hue
+if (( diff == 0 )); then
+    hue=0
+elif (( max == r )); then
+    hue=$(( ((g - b) * 60 / diff + 360) % 360 ))
+elif (( max == g )); then
+    hue=$(( (b - r) * 60 / diff + 120 ))
+else
+    hue=$(( (r - g) * 60 / diff + 240 ))
+fi
+
+echo "HEX: #$HEX | RGB: $r,$g,$b | Hue: $hue° | Sat: $sat%"
+
+# Низкая насыщенность = серые тона
+if (( sat < 15 )); then
+    if (( max < 80 )); then
+        COLOR="black"
+    elif (( max > 200 )); then
+        COLOR="white"
+    else
+        COLOR="grey"
+    fi
+else
+    # По диапазону hue
+    if   (( hue < 15 ));  then COLOR="red"
+    elif (( hue < 40 ));  then COLOR="deeporange"
+    elif (( hue < 55 ));  then COLOR="orange"
+    elif (( hue < 70 ));  then COLOR="yellow"
+    elif (( hue < 150 )); then COLOR="green"
+    elif (( hue < 185 )); then COLOR="teal"
+    elif (( hue < 210 )); then COLOR="cyan"
+    elif (( hue < 250 )); then COLOR="blue"
+    elif (( hue < 280 )); then COLOR="indigo"
+    elif (( hue < 320 )); then COLOR="violet"
+    elif (( hue < 345 )); then COLOR="magenta"
+    else COLOR="red"
+    fi
+fi
+
+echo "Selected: $COLOR"
+papirus-folders -C "$COLOR" --theme Papirus-Dark

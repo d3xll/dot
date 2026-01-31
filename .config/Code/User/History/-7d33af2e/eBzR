@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# timeout 25 секунд — если что-то зависло, не будем ждать вечно
+pacman_updates=$(timeout 25 checkupdates 2>/dev/null | wc -l || echo 0)
+
+# даём yay чуть больше времени (AUR иногда тормозит)
+aur_updates=$(timeout 40 yay -Qua 2>/dev/null | wc -l || echo 0)
+
+total=$((pacman_updates + aur_updates))
+
+if [[ $total -gt 0 ]]; then
+    echo "$total"
+    notify-send "󰏕 Updates" "Available $total packages"
+else
+    echo ""
+    notify-send -u low " It's all right" "There are no updates"
+fi

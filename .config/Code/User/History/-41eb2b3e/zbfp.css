@@ -1,0 +1,40 @@
+/* Вкладки (tabs) — полностью sharp */
+.monaco-workbench .tabs-and-actions-container .tab,
+.monaco-workbench .composite-bar .monaco-action-bar .action-item .action-label,
+.monaco-workbench .tabs .tab {
+  border-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+/* Активная вкладка (если отдельно скругляется) */
+.monaco-workbench .tabs .tab.active {
+  border-radius: 0 !important;
+}
+
+/* Контекстные меню и дропдауны */
+.monaco-menu-container,
+.monaco-menu,
+.monaco-menu .action-item,
+.monaco-menu .action-label,
+.monaco-menu .submenu-indicator {
+  border-radius: 0 !important;
+}
+
+/* Command Palette (quick input) и другие выпадашки */
+.quick-input-widget,
+.quick-input-list .quick-input-list-entry {
+  border-radius: 0 !important;
+}
+
+/* Suggestions dropdown (автодополнение) */
+.suggest-widget,
+.editor-widget.suggest-widget {
+  border-radius: 0 !important;
+}
+
+/* На всякий — если какие-то элементы упустил */
+.monaco-list-row,
+.monaco-hover {
+  border-radius: 0 !important;
+}

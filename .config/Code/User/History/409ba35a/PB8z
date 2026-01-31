@@ -1,0 +1,128 @@
+#!/bin/bash
+# ~/.local/bin/matugen-papirus
+
+# ═══════════════════════════════════════════════════════════════
+# Papirus Dynamic Color Matcher for Matugen
+# ═══════════════════════════════════════════════════════════════
+
+# Проверка аргумента
+if [[ -z "$1" ]]; then
+    echo "Usage: matugen-papirus <hex_color>"
+    echo "Example: matugen-papirus 8b5cf6"
+    exit 1
+fi
+
+INPUT_COLOR="${1#\#}"  # Убираем # если есть
+
+# ─────────────────────────────────────────────────────────────────
+# Цвета Papirus (HEX без #)
+# ─────────────────────────────────────────────────────────────────
+declare -A PAPIRUS_COLORS=(
+    ["adwaita"]="3584e4"
+    ["black"]="4f4f4f"
+    ["blue"]="5294e2"
+    ["bluegrey"]="607d8b"
+    ["breeze"]="5c8dca"
+    ["brown"]="ae8e6c"
+    ["carmine"]="b02640"
+    ["cyan"]="00bcd4"
+    ["darkcyan"]="008ba7"
+    ["deeporange"]="ff6e40"
+    ["green"]="87b158"
+    ["grey"]="8e8e8e"
+    ["indigo"]="5c6bc0"
+    ["magenta"]="ca5183"
+    ["nordic"]="5e81ac"
+    ["orange"]="f9a03f"
+    ["palebrown"]="c4a988"
+    ["paleorange"]="e6a679"
+    ["pink"]="f06292"
+    ["red"]="e25252"
+    ["teal"]="009688"
+    ["violet"]="7e57c2"
+    ["white"]="e4e4e4"
+    ["yaru"]="e95420"
+    ["yellow"]="ffcc00"
+)
+
+# ─────────────────────────────────────────────────────────────────
+# Функция: HEX → RGB
+# ─────────────────────────────────────────────────────────────────
+hex_to_rgb() {
+    local hex="$1"
+    local r=$((16#${hex:0:2}))
+    local g=$((16#${hex:2:2}))
+    local b=$((16#${hex:4:2}))
+    echo "$r $g $b"
+}
+
+# ─────────────────────────────────────────────────────────────────
+# Функция: Расстояние между цветами (Евклидово, взвешенное)
+# ─────────────────────────────────────────────────────────────────
+color_distance() {
+    local r1=$1 g1=$2 b1=$3
+    local r2=$4 g2=$5 b2=$6
+    
+    local dr=$((r1 - r2))
+    local dg=$((g1 - g2))
+    local db=$((b1 - b2))
+    
+    # Простое евклидово расстояние (квадрат, без sqrt для скорости)
+    echo $((dr*dr + dg*dg + db*db))
+}
+
+# ─────────────────────────────────────────────────────────────────
+# Основная логика: поиск ближайшего цвета
+# ─────────────────────────────────────────────────────────────────
+
+# Получаем RGB входного цвета
+read input_r input_g input_b <<< $(hex_to_rgb "$INPUT_COLOR")
+
+min_dist=999999999
+closest_name=""
+
+for name in "${!PAPIRUS_COLORS[@]}"; do
+    papirus_hex="${PAPIRUS_COLORS[$name]}"
+    
+    # Получаем RGB цвета Papirus
+    read pr pg pb <<< $(hex_to_rgb "$papirus_hex")
+    
+    # Вычисляем расстояние
+    dist=$(color_distance $input_r $input_g $input_b $pr $pg $pb)
+    
+    # Проверяем, ближе ли этот цвет
+    if (( dist < min_dist )); then
+        min_dist=$dist
+        closest_name="$name"
+    fi
+done
+
+# ─────────────────────────────────────────────────────────────────
+# Вывод результата
+# ─────────────────────────────────────────────────────────────────
+
+echo "═══════════════════════════════════════════════════"
+echo "  Papirus Dynamic Icons"
+echo "═══════════════════════════════════════════════════"
+echo "  Input color:   #$INPUT_COLOR"
+echo "  Matched color: $closest_name (#${PAPIRUS_COLORS[$closest_name]})"
+echo "  Distance:      $min_dist"
+echo "═══════════════════════════════════════════════════"
+
+# Применение цвета
+if command -v papirus-folders &> /dev/null; then
+    if papirus-folders -C "$closest_name" --theme Papirus-Dark 2>/dev/null; then
+        echo "  ✓ Applied successfully!"
+    else
+        # Попробуем без указания темы
+        papirus-folders -C "$closest_name" 2>/dev/null
+        echo "  ✓ Applied (default theme)"
+    fi
+else
+    echo "  ✗ Error: papirus-folders not found"
+    echo "  Install: yay -S papirus-folders-git"
+    exit 1
+fi
+
+# Лог
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] #$INPUT_COLOR → $closest_name" >> ~/.cache/papirus-dynamic.log

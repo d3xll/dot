@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Путь к rofi
+ROFI="rofi -dmenu -i -p "theme" -theme ~/.config/rofi/launchers/type-1/style-11.rasi"
+
+# 1. Выбор режима
+mode=$(echo -e "dark\nlight" | $ROFI )
+[ -z "$mode" ] && exit 0
+if [ "$mode" = "dark" ]; then
+    mode_param="dark"
+else
+    mode_param="light"
+fi
+
+# 2. Выбор схемы
+schemes="Content\nExpressive\nFidelity\nFruit Salad\nMonochrome\nNeutral\nRainbow\nTonal Spot\nVibrant"
+scheme=$(echo -e "$schemes" | $ROFI )
+[ -z "$scheme" ] && exit 0
+scheme_param="scheme-$(echo "$scheme" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')"
+
+# Получаем путь к текущим обоям через swww query
+# Формат вывода swww query: "currently displaying: /path/to/image.jpg"
+current_path=$(swww query | grep "currently displaying:" | head -n1 | awk '{print $NF}')
+
+# Проверка: если путь не найден (daemon не запущен или нет обоев)
+if [ -z "$current_path" ] || [ ! -f "$current_path" ]; then
+    notify-send -u critical "walset" "Не удалось найти текущие обои (swww query не дал путь)"
+    exit 1
+fi
+
+# Запуск matugen от текущего изображения
+matugen image "$current_path" -t "$scheme_param" -m "$mode_param"
+
+# Перезагрузка баров (как в твоём оригин200 скрипте)
+reloader-bars
+
+# Уведомление
+scheme_name=$(echo "$scheme" | tr '[:upper:]' '[:lower:]' | sed 's/^./\U&/g' | tr '-' ' ')
+notify-send "walset" "Тема обновлена — $(basename "$current_path") — $mode — $scheme_name"
+
+exit 0

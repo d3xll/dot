@@ -1,0 +1,18 @@
+#!/bin/bash
+# walset (fronted in based rofi)
+
+WALL_DIR="${HOME}/Wallpapers"   # ← поменяй под свою папку
+CWD="$(pwd)"
+
+cd "$WALL_DIR" || exit 1
+
+SELECTED_WALL=$(for a in *.jpg *.png; 
+                do echo -en "$a\0icon\x1f$a\n" ; 
+                done | rofi -dmenu -p "walset" \
+                            -theme ~/.config/rofi/launchers/type-3/style-4.rasi)
+
+if [ -n "$SELECTED_WALL" ]; then
+   walset-backet "$SELECTED_WALL"
+fi
+
+cd "$CWD" || exit

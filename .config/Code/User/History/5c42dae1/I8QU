@@ -1,0 +1,31 @@
+#!/bin/bash
+# walset-backend
+
+if [ $# -ne 1 ]; then
+    echo "pls, usage: $0 <yourdir/image.format>"
+    exit 1
+fi
+
+IMAGE="$1"
+
+#missing wallpaper = notification critical
+[ ! -f "$IMAGE" ] && { notify-send -u critical "walset" "file not found"; exit 1; }
+
+#swww daemon changing wallpaper
+swww img "$IMAGE" \
+    --transition-type grow \
+    --transition-duration 3 \
+    --transition-fps 60
+    
+# pywal integration (maybe >.<)
+# wal -i "$IMAGE" -n -q -t   # quiet, no reload, skip template
+
+#matugen integration
+matugen image "$IMAGE" -m dark
+
+# reloads
+pkill waybar; waybar >/dev/null 2>&1 &
+pkill swaync; swaync >/dev/null 2>&1 &
+hyprctl reload
+
+notify-send "walset" "${IMAGE##*/}"

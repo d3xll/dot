@@ -1,0 +1,20 @@
+{
+  "material-code.colors": {
+    "primary": "{{colors.primary.default.hex}}",
+    "primaryForeground": "{{colors.on_primary.default.hex}}",
+    "secondary": "{{colors.secondary.default.hex}}",
+    "secondaryForeground": "{{colors.on_secondary.default.hex}}",
+    "tertiary": "{{colors.tertiary.default.hex}}",
+    "tertiaryForeground": "{{colors.on_tertiary.default.hex}}",
+    "background": "{{colors.background.default.hex}}",
+    "foreground": "{{colors.on_background.default.hex}}",
+    "card": "{{colors.surface.default.hex}}",
+    "popover": "{{colors.surface_variant.default.hex}}",
+    "hover": "{{colors.surface_bright.default.hex}}",
+    "border": "{{colors.outline.default.hex}}",
+    "error": "{{colors.error.default.hex}}",
+    "errorForeground": "{{colors.on_error.default.hex}}",
+    "success": "{{colors.success.default.hex}}",
+    "warning": "{{colors.warning.default.hex}}"
+  }
+}
