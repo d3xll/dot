@@ -16,9 +16,9 @@
         "weeks-pos"     : "right",
         "on-scroll"     : 1,
         "format": {
-                    "months":     "<span color='#ffead3'><b>{}</b></span>",
-                    "days":       "<span color='#ecc6d9'><b>{}</b></span>",
-                    "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                    // "months":     "<span color='#ffead3'><b>{}</b></span>",
+                    // "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                    // "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
                     "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
                     "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
                     }
@@ -32,7 +32,7 @@
 
     "tray": {
         "icon-size": 12,
-        "spacing": 6
+        "spacing": 4
     },  
 
     "hyprland/workspaces": {
@@ -41,14 +41,12 @@
         "persistent-workspaces": {
             "*": [1, 2, 3, 4, 5, 6]
         },
+
         "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "",
-            "5": "",
-            "6": ""
-        },
+            "active": "",
+            "default": ""
+	    },
+
         "sort-by-number": true
     },
 
@@ -69,7 +67,7 @@
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol"
+        "on-click": "pavucontrol -t 3"
     },
 
     "hyprland/language": {
@@ -104,7 +102,7 @@
         "format": "󰍬 {volume}",
         "format-muted": "󰍭",
         "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
-        "on-click": "pavucontrol",
+        "on-click": "pavucontrol -t 4",
         "scroll-step": 5
     },
 

@@ -1,15 +1,14 @@
-[Spectrum]
-height=120
-nPoints=250
-spectrumShape=lines
+[Presets]
+lastLoadedOutputPreset=LoudnessCrystalEqualizer
 
 [StreamInputs]
 inputDevice=alsa_input.pci-0000_2b_00.4.analog-stereo
-visiblePage=pluginsPage
 
 [StreamOutputs]
+mostUsedPresets=Head,LoudnessCrystalEqualizer,LoudnessEqualizer
 outputDevice=alsa_output.usb-GeneralPlus_USB_Audio_Device-00.analog-stereo
-plugins=equalizer#0,equalizer#1
+plugins=gate#0,compressor#0,multiband_compressor#0,crystalizer#0,equalizer#0,limiter#0
+usedPresets=LoudnessCrystalEqualizer:55,LoudnessEqualizer:7,Head:59
 visiblePage=pluginsPage
 visiblePlugin=equalizer#0
 
@@ -17,7 +16,6 @@ visiblePlugin=equalizer#0
 forceBreezeTheme=false
 
 [Window]
-height=1031
+height=1029
 visiblePipeWirePage=clientsPage
-visiblePresetSheetPage=communityPage
-width=948
+width=945

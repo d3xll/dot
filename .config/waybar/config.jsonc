@@ -3,18 +3,17 @@
     "layer": "top", // Waybar at top layer
     "position": "top", // Waybar position (top|bottom|left|right)
     "margin-top": 4,
+    "margin-left": 8,
+    "margin-right": 8,
     "modules-left": [
-        "custom/arch",
-        "clock",
-        "tray"
     ],
     "modules-center": [
-        "hyprland/workspaces"
+        "hyprland/workspaces",
+        "clock"
     ],
     "modules-right": [
         "wireplumber#source",
         "pulseaudio",
-        "hyprland/language",
         "custom/notification"
     ],
 

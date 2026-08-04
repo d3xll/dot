@@ -3,10 +3,10 @@
 * Generated with Matugen
 */
 
-@define-color background        #131314;
+@define-color background        #131313;
 @define-color background-alt    #1b1c1c;
-@define-color selected          #c0cdd8;
-@define-color text              #c0cdd8;
-@define-color hover             #c3c7cb;
+@define-color selected          #bdc9ca;
+@define-color text              #bdc9ca;
+@define-color hover             #c4c7c7;
 @define-color urgent            #ffb4ab;
   

@@ -1,0 +1,87 @@
+@import 'colors.css';
+
+* {
+    border: none;
+    border-radius: 0px;
+
+    font-family: "Rubik", "Symbols Nerd Font Mono";
+    font-size: 12px;
+    font-weight: 500;
+
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+window#waybar {
+    background: none;
+}
+
+tooltip {
+    background: @surface;
+    border:1px solid @primary;
+    border-radius:12px;
+}
+
+tooltip label {
+    color: @secondary;
+    padding: 6px;
+}
+
+#workspaces {
+    margin: 0 0 0 4px;
+}
+
+#workspaces button {
+    background-color: @surface;
+    color: @primary;
+    
+    padding: 3px 8px;
+    margin: 0 2px;
+    border-radius: 6px;
+    transition: all 0.45s ease-in-out;
+}
+
+#workspaces button.active {
+    background-color: @on_primary;
+    color: @primary;
+
+    /* min-width: 25px; */
+    transition: all 0.4s ease-in-out;
+}
+
+#workspaces button:hover {
+    background-color: @on_surface;
+    color: @surface;
+
+    min-width: 35px;
+} 
+
+/* Others */
+#clock,
+#custom-arch,
+#tray,
+#pulseaudio,
+#custom-notification,
+#language,
+#wireplumber,
+#custom-updates {
+    background-color: @surface;
+    color: @primary;
+    padding: 6px 12px 6px 12px;
+    margin: 0 0 0 4px;
+    border-radius: 6px;
+
+    transition: all 0.45s ease-in-out;
+}
+
+#custom-arch {
+    font-size: 10px;
+}
+
+#custom-arch:hover,
+#custom-notification:hover,
+#pulseaudio:hover,
+#wireplumber:hover {
+    color: @secondary;
+}

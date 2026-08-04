@@ -7,12 +7,12 @@
             "top": 1,
         },
         "color": {
-            "1": "#c3c7cb"
+            "1": "#c4c7c7"
         }
     },
     "display": {
         "separator": " ",
-        "color": "#c3c7cb"
+        "color": "#c4c7c7"
     },
     "modules": [
         {

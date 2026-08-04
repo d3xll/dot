@@ -23,14 +23,17 @@ output_path = '~/.local/share/color-schemes/Matugen.colors'
 input_path = '~/.config/matugen/templates/colors.css'
 output_path = '~/.config/waybar/colors.css'
 
-[templates.hyprland]
-input_path = '~/.config/matugen/templates/hyprland-colors.conf'
-output_path = '~/.config/hypr/source/colors.conf'
+[templates.hyprland-lua]
+input_path = '~/.config/matugen/templates/hyprland-colors.lua'
+output_path = '~/.config/hypr/source/colors.lua'
 
-[templates.vscode]
-input_path = "~/.config/matugen/templates/vscode.json"
-output_path = "~/.cache/matugen/vscode-colors.json"
-post_hook = 'update-vscode'
+[templates.vscode-raw]
+input_path = './templates/vscode-colors'
+output_path = '~/.cache/matugen/vscode-colors'
+
+[templates.vscode-json]
+input_path = './templates/vscode-colors.json'
+output_path = '~/.cache/matugen/vscode-colors.json'
 
 [templates.kitty]
 input_path = '~/.config/matugen/templates/kitty-colors.conf'
@@ -53,6 +56,14 @@ output_path = '~/.config/rofi/colors/matugen-theme.rasi'
 input_path = '~/.config/matugen/templates/swaync.css'
 output_path = '~/.config/swaync/matugen-colors.css'
 
+[templates.swayosd]
+input_path = '~/.config/matugen/templates/colors.css'
+output_path = '~/.config/swayosd/colors.css'
+
 [templates.papirus]
 input_path = "~/.config/matugen/templates/papirus"
 output_path = "~/.cache/matugen/papirus"
+
+[templates.startpage]
+input_path = "~/.config/matugen/templates/startpage.css"
+output_path = "~/.config/chromium/CustomPage/colors.css"

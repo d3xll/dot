@@ -4,9 +4,9 @@
     border: none;
     border-radius: 0px;
 
-    font-family: "Google Sans", "Symbols Nerd Font Mono";
+    font-family: "Rubik", "Symbols Nerd Font Mono";
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 500;
 
     min-height: 0;
     padding: 0;
@@ -14,7 +14,15 @@
 }
 
 window#waybar {
-    background: none;
+    background: transparent;
+}
+
+.modules-center,
+.modules-right {
+    background-color: @surface;
+    padding: 4px 8px;
+    margin: 0 4px;
+    border-radius: 12px;
 }
 
 tooltip {
@@ -29,36 +37,34 @@ tooltip label {
 }
 
 #workspaces {
-    background-color: @surface;
-    padding: 5px 3px;
-    margin: 0 0 0 12px;
-    border-radius: 18px;
+    margin: 0 0 0 0px;
+    background-color: transparent;
+    border-radius: 12px;
+    padding: 0px;
 }
 
 #workspaces button {
-    background-color: @surface_container;
-    color: @secondary;
+    background-color: @transparent;
+    color: @primary;
     
-    padding: 2px 12px;
-    margin: 0 2.5px;
-    border-radius: 50px;
-    transition: all 0.25s ease-in-out;
+    padding: 0px 4px;
+    border-radius: 6px;
+    transition: all 0.45s ease-in-out;
 }
 
 #workspaces button.active {
     background-color: @on_primary;
     color: @primary;
 
-    min-width: 25px;
-    transition: all 0.15s ease-in-out;
+    /* min-width: 25px; */
+    transition: all 0.4s ease-in-out;
 }
 
 #workspaces button:hover {
     background-color: @on_surface;
     color: @surface;
 
-    min-width: 50px;
-    border-radius: 16px;
+    min-width: 35px;
 } 
 
 /* Others */
@@ -70,27 +76,22 @@ tooltip label {
 #language,
 #wireplumber,
 #custom-updates {
-    background-color: @surface;
+    background-color: transparent;
     color: @primary;
-    padding: 0 14px 0 14px;
+    padding: 1px 6px 1px 6px;
     margin: 0 0 0 4px;
-    border-radius: 50px;
+    border-radius: 6px;
 
     transition: all 0.45s ease-in-out;
 }
 
-/* End layouts */
-#custom-notification {
-    margin: 0 8px 0 4px;
-}
-
 #custom-arch {
     font-size: 10px;
-    margin: 0 0 0 8px;
-    padding: 0 16px 0 16px;
 }
 
 #custom-arch:hover,
-#custom-notification:hover {
+#custom-notification:hover,
+#pulseaudio:hover,
+#wireplumber:hover {
     color: @secondary;
 }

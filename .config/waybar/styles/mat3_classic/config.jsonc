@@ -1,0 +1,27 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
+    "margin-top": 4,
+    "margin-left": 8,
+    "margin-right": 8,
+    "modules-left": [
+        "clock",
+        "hyprland/workspaces"
+    ],
+    "modules-center": [
+        ""
+    ],
+    "modules-right": [
+        "tray",
+        "wireplumber#source",
+        "pulseaudio",
+        "hyprland/language",
+        "custom/notification",
+    ],
+
+    //Modules configuratio
+    "include": [
+		"~/.config/waybar/modules.json"
+	]
+}

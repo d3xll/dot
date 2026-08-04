@@ -1,7 +1,0 @@
-body {
-  --radius: 0px !important;
-}
-
-.monaco-workbench * {
-  border-radius: 0 !important;
-}
